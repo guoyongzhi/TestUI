@@ -13,6 +13,7 @@ class WebdriverOperator(object):
     
     def __init__(self, driver: Chrome):
         self.driver = driver
+        self.alert = None
 
     def get_screen_shot_as_file(self):
         """
@@ -151,7 +152,6 @@ class WebdriverOperator(object):
         try:
             click_type = kwargs['type']
             locator = kwargs['locator']
-    
         except KeyError:
             return False, '缺少传参'
         try:
@@ -260,3 +260,61 @@ class WebdriverOperator(object):
             screen_shot_path = self.get_screen_shot_as_file()
             return False, '键盘操作[' + locator + ']失败,已截图[' + screen_shot_path + '].'
         return True, '键盘操作[' + locator + ']成功'
+
+    def switch_alert(self, **kwargs):
+        """
+        切换到弹窗
+        :param kwargs:
+        :type kwargs:
+        :return:
+        :rtype:
+        """
+        try:
+            s = kwargs['time']
+            if s is None:
+                s = 30
+        except KeyError:
+            s = 30
+        try:
+            time.sleep(s)
+            self.alert = self.driver.switch_to.alert()
+        except Exception:
+            screen_shot_path = self.get_screen_shot_as_file()
+            return False, '切换失败 已截图[' + screen_shot_path + '].'
+        return True, '切换成功'
+    
+    def alert_input(self, **kwargs):
+        try:
+            text = str(kwargs['input'])
+        except KeyError:
+            return False, '缺少传参'
+        try:
+            self.alert.send_keys(text)
+        except Exception:
+            screen_shot_path = self.get_screen_shot_as_file()
+            return False, '弹窗输入[' + text + ']失败,已截图[' + screen_shot_path + '].'
+        return True, '弹窗输入[' + text + ']成功'
+
+    def alert_click(self):
+        try:
+            self.alert.accept()
+        except Exception:
+            screen_shot_path = self.get_screen_shot_as_file()
+            return False, '弹窗点击确定失败,已截图[' + screen_shot_path + '].'
+        return True, '弹窗点击确定成功'
+    
+    def alert_close(self):
+        try:
+            self.alert.dismiss()
+        except Exception:
+            screen_shot_path = self.get_screen_shot_as_file()
+            return False, '弹窗点击关闭失败,已截图[' + screen_shot_path + '].'
+        return True, '弹窗点击关闭成功'
+    
+    def upload_end_key_file(self):
+        try:
+            self.alert.dismiss()
+        except Exception:
+            screen_shot_path = self.get_screen_shot_as_file()
+            return False, '弹窗点击关闭失败,已截图[' + screen_shot_path + '].'
+        return True, '弹窗点击关闭成功'

@@ -4,8 +4,8 @@ from common.getfiledir import DATADIR  # 导入data目录
 
 
 class ReadCase(object):
-    def __init__(self, case='case.xlsx'):
-        file = os.path.join(DATADIR, case)  # 得到case文件的路径
+    def __init__(self, case='case', project=None):
+        file = os.path.join(project, case)  # 得到case文件的路径
         self.sw = openpyxl.load_workbook(file)
         # print(self.sw)
 

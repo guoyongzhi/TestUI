@@ -1,4 +1,4 @@
-from common.getconf import Config
+from common.getconf import Config, file_name, os, DATADIR
 from common.getcase import ReadCase
 from base_factory.browseroperator import BrowserOperator
 from base_factory.webdriveroperator import WebdriverOperator
@@ -7,12 +7,12 @@ from base_factory.webdriveroperator import WebdriverOperator
 
 class Factory(object):
     
-    def __init__(self, case='case'):
+    def __init__(self, case='case', run_path=None):
         self.con = Config()
         self.con_fun = dict(self.con.items('Function'))
         self.con_keys = dict(self.con.items('Keys'))
-        self.con_case = dict(self.con.items('Case'))
         self.case = case
+        self.run_path = run_path
         """
         浏览器操作对象
         """
@@ -106,7 +106,7 @@ class Factory(object):
         index = 0
         for case in cases:
             if case['keyword'] == '调用用例':
-                xlsx = ReadCase(self.con_case[self.case])
+                xlsx = ReadCase(self.case, self.run_path)
                 try:
                     case_name = case['locator']
                 except KeyError:
@@ -128,7 +128,7 @@ class Factory(object):
 
     def init_execute_case(self):
         print("----------初始化用例----------")
-        xlsx = ReadCase(self.con_case[self.case])
+        xlsx = ReadCase(self.case, self.run_path)
         isOK, result = xlsx.readallcase()
         if not isOK:
             print(result)
@@ -153,8 +153,8 @@ class Factory(object):
 
 if __name__ == '__main__':
     f = Factory('case')
-    af = f.con_keys["删除"]
+    # af = f.con_keys["删除"]
     # af = f.execute_keyword(**{'id': 1, 'result': None, 'keyword': '打开网页', 'type': 'url',
     #                           'locator': 'https://www.baidu.com', 'index': None, 'input': None, 'check': None,
     #                           'time': None, 'sheet': 'baidu'})
-    print(af)
+    # print(af)
