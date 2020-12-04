@@ -109,9 +109,10 @@ class Factory(object):
                 xlsx = ReadCase(self.case, self.run_path)
                 try:
                     case_name = case['locator']
+                    case_index = case['file']  # 如果换文件的文件路径
                 except KeyError:
                     return False, '调用用例没提供用例名，请检查用例'
-                isOK, result = xlsx.get_common_case(case_name)
+                isOK, result = xlsx.get_common_case(case_name, case_index)
                 if isOK and type([]) == type(result):
                     isOK, result_1 = self.init_common_case(result)  # 递归检查公共用例里是否存在调用用例
                 elif not isOK:
@@ -129,7 +130,7 @@ class Factory(object):
     def init_execute_case(self):
         print("----------初始化用例----------")
         xlsx = ReadCase(self.case, self.run_path)
-        isOK, result = xlsx.readallcase()
+        isOK, result = xlsx.read_all_case()
         if not isOK:
             print(result)
             print("----------结束执行----------")

@@ -27,10 +27,10 @@ def file_name(file_dir, file_type):
 
 if __name__ == '__main__':
     con = Config()
-    # print(dict(con.items('base'))['project'])
-    names = file_name(os.path.join(DATADIR, con.get('base', 'project')), 'files')
-    name = []
-    for n in names:
-        name.append(n.split('.')[0])
-        print(n, type(n))
-    print(dict(zip(name, names)))
+    print(dict(con.items('base'))['data_from'])
+    # names = file_name(os.path.join(DATADIR, con.get('base', 'project')), 'files')
+    # name = []
+    # for n in names:
+    #     name.append(n.split('.')[0])
+    #     print(n, type(n))
+    # print(dict(zip(name, names)))
