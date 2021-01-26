@@ -12,9 +12,16 @@ from common.log import mylog
 
 class Test_run(object):
     def __init__(self, is_establish=False, data_from='Excel'):
+        """
+        启动初始化函数（整理测试用例信息等）
+        :param is_establish: 是否需要复制或者创建文件（分类测试，不同模块等）
+        :type is_establish: bool
+        :param data_from: 数据来源
+        :type data_from: str
+        """
         result = False
         if data_from == 'mysql':
-            print()
+            print("mysql未封装完成")
         elif data_from == 'Excel':
             result = self.package_test_suit(is_establish=is_establish)
             if not result:
@@ -59,7 +66,6 @@ class Test_run(object):
                                 pass
                             else:
                                 print("删除文件失败", e)
-            
                 names = file_name(run_path, 'files')
                 for n in names:
                     if not os.path.exists(os.path.join(run_path, 'test_' + n)):
@@ -70,6 +76,11 @@ class Test_run(object):
         return True
     
     def load_test_suit(self):
+        """
+        装载测试用例
+        :return: 是否成功
+        :rtype: bool
+        """
         self.suit.addTest(self.load.discover(CASEDIR))
         nowTime = time.strftime("%Y-%m-%d %H_%M_%S")
         self.report = os.path.join(REPORTDIR, nowTime + '_report.html')
@@ -78,6 +89,13 @@ class Test_run(object):
         return True
     
     def execute(self, is_send_email=False):
+        """
+        执行测试用例
+        :param is_send_email: 是否发送邮件
+        :type is_send_email: bool
+        :return:
+        :rtype:
+        """
         self.runner.run(self.suit)
         if is_send_email:
             Opr_email(self.report).send_email()

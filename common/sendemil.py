@@ -8,7 +8,6 @@ from common.getfiledir import REPORTDIR
 
 
 class Opr_email(object):
-    
     def __init__(self, filename):
         """
         初始化文件路径与相关配置
